@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sigit Apri — QA Engineer Portfolio</title>
+<meta name="description" content="Sigit Apri (Tigis) — QA Engineer. Manual and automated testing across UI, API and performance.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* =====================================================================
+     DESIGN TOKENS — change colors/fonts here, everything else follows
+     ===================================================================== */
+  :root {
+    --bg: #FAFAF8;
+    --surface: #FFFFFF;
+    --ink: #1B1E23;
+    --ink-soft: #5B6066;
+    --line: #E3E0D6;
+    --pass: #2E7D6B;
+    --pass-soft: #E4F0EC;
+    --amber: #B87A1E;
+    --amber-soft: #FBF0DD;
+    --tag-bg: #F1F0EA;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --bg: #14171A;
+      --surface: #1A1E22;
+      --ink: #EDEDE7;
+      --ink-soft: #9AA0A6;
+      --line: #2B3035;
+      --pass: #52C2A2;
+      --pass-soft: rgba(82, 194, 162, 0.12);
+      --amber: #E3AC56;
+      --amber-soft: rgba(227, 172, 86, 0.12);
+      --tag-bg: #20252A;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #14171A;
+    --surface: #1A1E22;
+    --ink: #EDEDE7;
+    --ink-soft: #9AA0A6;
+    --line: #2B3035;
+    --pass: #52C2A2;
+    --pass-soft: rgba(82, 194, 162, 0.12);
+    --amber: #E3AC56;
+    --amber-soft: rgba(227, 172, 86, 0.12);
+    --tag-bg: #20252A;
+  }
+
+  html {
+    scroll-padding-top: calc(64px + env(safe-area-inset-top, 0px));
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .mono { font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace; }
+  a { color: inherit; }
+
+  .container { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- Tab bar ---------- */
+  .tabbar {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 20;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .tabbar-inner {
+    max-width: 760px; margin: 0 auto; padding: 0 24px;
+    display: flex; align-items: center; gap: 2px;
+    overflow-x: auto; scrollbar-width: none;
+  }
+  .tabbar-inner::-webkit-scrollbar { display: none; }
+  .tab {
+    display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
+    padding: 14px 14px 12px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+    color: var(--ink-soft); text-decoration: none;
+    border-bottom: 2px solid transparent;
+    background: transparent; border-left: none; border-right: none; border-top: none;
+    cursor: pointer; transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .tab .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--line); flex: none; }
+  .tab.active { color: var(--ink); border-bottom-color: var(--pass); }
+  .tab.active .dot { background: var(--pass); }
+  .tab:hover { color: var(--ink); }
+
+  /* ---------- Hero ---------- */
+  .hero { padding: 56px 0 48px; }
+  .kw { color: var(--pass); font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+  .feature-label { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--ink-soft); margin: 0 0 6px; }
+  .feature-title {
+    font-family: 'Space Grotesk', sans-serif; font-weight: 600;
+    font-size: clamp(28px, 5vw, 40px); line-height: 1.15;
+    margin: 0 0 6px; max-width: 16ch;
+    opacity: 0; transform: translateY(10px); animation: rise 0.6s ease forwards;
+  }
+  .feature-sub { font-size: 15px; color: var(--ink-soft); margin: 0 0 28px; }
+  @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+  .gwt { border-left: 2px solid var(--line); padding-left: 18px; margin-bottom: 32px; }
+  .gwt p { margin: 0 0 10px; font-size: 16px; color: var(--ink); }
+  .gwt p:last-child { margin-bottom: 0; }
+  .step { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: var(--pass); margin-right: 8px; }
+
+  .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px;
+    border-radius: 3px; font-size: 14.5px; font-weight: 500;
+    text-decoration: none; border: 1px solid var(--line);
+  }
+  .btn-primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .btn-ghost { background: transparent; color: var(--ink); }
+
+  /* ---------- Section scaffolding ---------- */
+  section.scenario { padding: 48px 0; border-top: 1px solid var(--line); }
+  .scenario-head { margin-bottom: 28px; }
+  .scenario-head .feature-label { margin-bottom: 4px; }
+  .scenario-head h2 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 24px; margin: 0; }
+
+  /* ---------- Experience ---------- */
+  .job { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px dashed var(--line); }
+  .job:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 2px; }
+  .job-role { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; margin: 0; }
+  .job-period { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink-soft); white-space: nowrap; }
+  .job-company { font-size: 14px; color: var(--pass); margin: 0 0 12px; font-weight: 500; }
+  .job-bullets { margin: 0; padding-left: 18px; }
+  .job-bullets li { font-size: 14.5px; margin-bottom: 6px; color: var(--ink); }
+  .job-bullets li:last-child { margin-bottom: 0; }
+  .job-projects { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .job-projects span {
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--ink-soft);
+    background: var(--tag-bg); padding: 3px 8px; border-radius: 2px;
+  }
+
+  .edu-item { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .edu-item .school { font-weight: 600; font-size: 15px; }
+  .edu-item .degree { font-size: 14px; color: var(--ink-soft); }
+  .edu-item .period { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink-soft); white-space: nowrap; }
+
+  /* ---------- Skills ---------- */
+  .skill-group { margin-bottom: 22px; }
+  .skill-group:last-child { margin-bottom: 0; }
+  .skill-group h3 { font-size: 13px; font-weight: 500; color: var(--ink-soft); margin: 0 0 10px; font-family: 'JetBrains Mono', monospace; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { font-size: 13.5px; padding: 6px 12px; background: var(--tag-bg); border-radius: 3px; color: var(--ink); }
+  .chip.learning { background: var(--amber-soft); color: var(--amber); }
+
+  /* ---------- Project / test-run cards ---------- */
+  .run-card { border: 1px solid var(--line); border-left: 3px solid var(--pass); border-radius: 2px; padding: 22px 22px 20px; margin-bottom: 18px; background: var(--surface); }
+  .run-card.wip { border-left-color: var(--amber); }
+  .run-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 4px; flex-wrap: wrap; }
+  .run-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 18px; margin: 0; }
+  .status { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.02em; padding: 3px 8px; border-radius: 2px; background: var(--pass-soft); color: var(--pass); flex: none; }
+  .status.wip { background: var(--amber-soft); color: var(--amber); }
+  .run-target { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: var(--ink-soft); margin: 0 0 16px; }
+  .run-gwt p { margin: 0 0 8px; font-size: 15px; }
+  .run-gwt p:last-child { margin-bottom: 0; }
+  .run-stack { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+  .run-stack span { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--ink-soft); background: var(--tag-bg); padding: 3px 8px; border-radius: 2px; }
+  .run-link { display: inline-block; margin-top: 16px; font-size: 13.5px; font-weight: 500; color: var(--pass); text-decoration: none; border-bottom: 1px solid transparent; }
+  .run-link:hover { border-bottom-color: var(--pass); }
+
+  /* ---------- Contact ---------- */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 460px; }
+  .contact-item { border: 1px solid var(--line); border-radius: 2px; padding: 14px 16px; }
+  .contact-item .k { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-soft); display: block; margin-bottom: 4px; }
+  .contact-item a, .contact-item span.v { font-size: 14.5px; font-weight: 500; text-decoration: none; }
+  .contact-item a:hover { text-decoration: underline; }
+
+  footer {
+    border-top: 1px solid var(--line); padding: 24px 0 calc(28px + env(safe-area-inset-bottom, 0px));
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink-soft);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+
+  @media (max-width: 560px) {
+    .contact-grid { grid-template-columns: 1fr; }
+    .hero { padding: 40px 0 36px; }
+    section.scenario { padding: 36px 0; }
+    .job-head { flex-direction: column; gap: 2px; }
+  }
+
+  :focus-visible { outline: 2px solid var(--pass); outline-offset: 2px; }
+</style>
+</head>
+<body>
+
+<div class="tabbar">
+  <div class="tabbar-inner" id="tabbar">
+    <a class="tab active" data-target="hero" href="#hero"><span class="dot"></span>profile.feature</a>
+    <a class="tab" data-target="experience" href="#experience"><span class="dot"></span>experience.log</a>
+    <a class="tab" data-target="skills" href="#skills"><span class="dot"></span>skills.json</a>
+    <a class="tab" data-target="projects" href="#projects"><span class="dot"></span>projects.log</a>
+    <a class="tab" data-target="contact" href="#contact"><span class="dot"></span>contact.md</a>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Hero, Experience, Education, Skills, Projects and Contact sections below
+       are all rendered by JavaScript from the DATA object. See <script> at the
+       bottom of this file — edit DATA there, not the markup here. -->
+  <section class="hero" id="hero"></section>
+  <section class="scenario" id="experience"></section>
+  <section class="scenario" id="education"></section>
+  <section class="scenario" id="skills"></section>
+  <section class="scenario" id="projects"></section>
+  <section class="scenario" id="contact"></section>
+
+  <footer>
+    <span id="year-line">© 2026</span>
+    <span id="status-line">portfolio.feature — 0 failed, 6 sections passed</span>
+  </footer>
+
+</div>
+
+<script>
+/* =========================================================================
+   EDIT YOUR INFO HERE
+   This single object drives the entire page. Change the values below and
+   reload the file in your browser — no need to touch the HTML or CSS.
+   Opens cleanly in VS Code / IntelliJ / Xcode as plain JS, so your editor's
+   autocomplete, folding and formatting all work on it.
+   ========================================================================= */
+const DATA = {
+
+  person: {
+    name: "Sigit Apri",
+    tagline: "QA Engineer — manual & automated testing",
+    location: "Jakarta, Indonesia",
+    email: "sigitapri.sugi@gmail.com",
+    phone: "+62 822-1327-8069",
+    linkedin: "https://www.linkedin.com/in/sigit-apri-84b377146",
+    github: "https://github.com/sigitapri"
+  },
+
+  // Given / When / Then summary shown at the top of the page
+  heroStory: [
+    { step: "Given", text: "6 years of manual testing and 2 years building automation frameworks" },
+    { step: "When",  text: "a product needs reliable coverage across UI, API and performance" },
+    { step: "Then",  text: "you get test suites that catch regressions before users do" }
+  ],
+
+  experience: [
+    {
+      role: "QA Engineer",
+      company: "PT. Koltiva",
+      period: "Mar 2021 — Present",
+      bullets: [
+        "Designed and maintained Web Automation Frameworks using Java, Selenium WebDriver and Cucumber (BDD)",
+        "Built Mobile Automation Frameworks using Java and Appium for Android apps",
+        "Built and maintained API Automation Test Suites with JMeter, validated REST APIs with Postman",
+        "Ran Performance Testing with Apache JMeter to evaluate scalability and find bottlenecks",
+        "Designed and executed test cases for Smoke, Functional, Regression, Integration and UAT across releases",
+        "Validated backend data with MySQL queries, tracked defects in Jira through the SDLC",
+        "Collaborated with Developers, PMs and BAs in Agile ceremonies (Sprint Planning, Stand-up, Review, Retro)"
+      ],
+      projects: ["Koltitrace Shop", "Koltitrace Lite FarmX", "Koltiva Loan", "MARS Premium Point", "Koltipay", "Indomarco", "iMkas", "Storial", "Otto SFA"]
+    },
+    {
+      role: "Software Quality Assurance",
+      company: "PT. Nusa Kreasi Cemerlang",
+      period: "May 2019 — Mar 2021",
+      bullets: [
+        "Created and maintained test cases based on functional and business requirements",
+        "Executed Manual Functional, Smoke, Regression and User Acceptance Testing",
+        "Performed REST API testing with Postman to validate request/response data",
+        "Identified, documented and tracked defects to resolution with developers",
+        "Participated in Agile development and sprint activities"
+      ],
+      projects: []
+    }
+  ],
+
+  education: [
+    { school: "UPN \"Veteran\" Jakarta", degree: "Bachelor of Information Systems", period: "Jun 2012 — Sep 2018" }
+  ],
+
+  skills: [
+    { group: "UI & mobile automation", items: ["Selenium", "Appium", "Java", "Cucumber BDD", "Playwright", "TypeScript", "Cypress", "Javascript"] },
+    { group: "API & performance", items: ["Postman", "JMeter"] },
+    { group: "Database & CI/CD", items: ["MySQL", "Jenkins", "GitLab CI"] },
+    { group: "Tooling", items: ["Jira", "Testlink", "Waffle", "Open STF", "BrowserStack"] },
+    { group: "Currently expanding", items: ["Playwright + TypeScript", "Cypress + Javascript"], learning: true }
+  ],
+
+  projects: [
+    {
+      title: "Selenium + Appium — Java & Cucumber BDD framework",
+      status: "PASSING",
+      target: "target: Web & Android regression suites · PT. Koltiva",
+      story: [
+        { step: "Given", text: "multiple production products (Koltitrace Shop, FarmX, Koltiva Loan, Koltipay) needing consistent regression coverage across frequent releases" },
+        { step: "When",  text: "designing and maintaining a Web Automation Framework in Java, Selenium WebDriver and Cucumber (BDD), alongside a Mobile Automation Framework in Java and Appium for Android" },
+        { step: "Then",  text: "cut regression testing effort across product lines, with scenarios reviewed against business requirements and defects tracked end-to-end in Jira through the SDLC" }
+      ],
+      stack: ["Java", "Selenium WebDriver", "Appium", "Cucumber BDD", "Jenkins", "GitLab CI"],
+      link: "#"
+    },
+    {
+      title: "Playwright + Cucumber BDD framework",
+      status: "PASSING",
+      target: "target: BookCart (SQLite · .NET 10 · Angular 20)",
+      story: [
+        { step: "Given", text: "a Java/Selenium background and a need to modernize toward TypeScript" },
+        { step: "When",  text: "building a Playwright + Cucumber BDD framework from scratch" },
+        { step: "Then",  text: "worked through pageFixture patterns, async/await correctness and moved off deprecated APIs like .type() in favor of .fill(), with HTML reporting wired in via multiple-cucumber-html-reporter" }
+      ],
+      stack: ["Playwright", "Cucumber", "TypeScript", "multiple-cucumber-html-reporter"],
+      link: "https://github.com/sigitapri/playwright_cucumber_brightly_test"
+    },
+    {
+      title: "Cypress automation framework",
+      status: "IN PROGRESS",
+      target: "target: OpenCart · reference: itkhanz/Cypress-Framework",
+      story: [
+        { step: "Given", text: "a well-structured reference framework using JS, Page Object Model" },
+        { step: "When",  text: "learning Cypress from the ground up" },
+        { step: "Then",  text: "building an original repo combining Cypress, JavaScript, Cucumber BDD and POM" }
+      ],
+      stack: ["Cypress", "JavaScript", "Cucumber", "Page Object Model"],
+      link: "#"
+    }
+  ]
+};
+
+/* =========================================================================
+   RENDERING — builds the page from DATA above. You normally don't need to
+   edit anything below this line.
+   ========================================================================= */
+(function render() {
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+
+  // ---- Hero ----
+  document.title = DATA.person.name + " — QA Engineer Portfolio";
+  $("hero").innerHTML = `
+    <p class="feature-label"><span class="kw">Feature:</span> QA Engineering</p>
+    <h1 class="feature-title">${esc(DATA.person.name)}</h1>
+    <p class="feature-sub">${esc(DATA.person.tagline)} · ${esc(DATA.person.location)}</p>
+    <div class="gwt">
+      ${DATA.heroStory.map(s => `<p><span class="step mono">${esc(s.step)}</span>${esc(s.text)}</p>`).join("")}
+    </div>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#projects">See the test runs</a>
+      <a class="btn btn-ghost" href="mailto:${esc(DATA.person.email)}">Get in touch</a>
+    </div>
+  `;
+
+  // ---- Experience ----
+  $("experience").innerHTML = `
+    <div class="scenario-head">
+      <p class="feature-label"><span class="kw">Scenario:</span> Where I've worked</p>
+      <h2>Experience</h2>
+    </div>
+    ${DATA.experience.map(job => `
+      <div class="job">
+        <div class="job-head">
+          <h3 class="job-role">${esc(job.role)}</h3>
+          <span class="job-period mono">${esc(job.period)}</span>
+        </div>
+        <p class="job-company">${esc(job.company)}</p>
+        <ul class="job-bullets">
+          ${job.bullets.map(b => `<li>${esc(b)}</li>`).join("")}
+        </ul>
+        ${job.projects.length ? `<div class="job-projects">${job.projects.map(p => `<span>${esc(p)}</span>`).join("")}</div>` : ""}
+      </div>
+    `).join("")}
+  `;
+
+  // ---- Education ----
+  $("education").innerHTML = `
+    <div class="scenario-head">
+      <p class="feature-label"><span class="kw">Scenario:</span> Background</p>
+      <h2>Education</h2>
+    </div>
+    ${DATA.education.map(e => `
+      <div class="edu-item">
+        <div>
+          <div class="school">${esc(e.school)}</div>
+          <div class="degree">${esc(e.degree)}</div>
+        </div>
+        <span class="period mono">${esc(e.period)}</span>
+      </div>
+    `).join("")}
+  `;
+
+  // ---- Skills ----
+  $("skills").innerHTML = `
+    <div class="scenario-head">
+      <p class="feature-label"><span class="kw">Scenario:</span> Toolbox in active use</p>
+      <h2>Skills</h2>
+    </div>
+    ${DATA.skills.map(g => `
+      <div class="skill-group">
+        <h3>${esc(g.group)}</h3>
+        <div class="chips">
+          ${g.items.map(i => `<span class="chip${g.learning ? " learning" : ""}">${esc(i)}</span>`).join("")}
+        </div>
+      </div>
+    `).join("")}
+  `;
+
+  // ---- Projects ----
+  $("projects").innerHTML = `
+    <div class="scenario-head">
+      <p class="feature-label"><span class="kw">Scenario:</span> Recent test runs</p>
+      <h2>Projects</h2>
+    </div>
+    ${DATA.projects.map(p => `
+      <article class="run-card${p.status !== "PASSING" ? " wip" : ""}">
+        <div class="run-head">
+          <h3 class="run-title">${esc(p.title)}</h3>
+          <span class="status${p.status !== "PASSING" ? " wip" : ""}">${esc(p.status)}</span>
+        </div>
+        <p class="run-target mono">${esc(p.target)}</p>
+        <div class="run-gwt">
+          ${p.story.map(s => `<p><span class="step mono">${esc(s.step)}</span>${esc(s.text)}</p>`).join("")}
+        </div>
+        <div class="run-stack">
+          ${p.stack.map(s => `<span>${esc(s)}</span>`).join("")}
+        </div>
+        <a class="run-link" href="${esc(p.link)}" target="_blank" rel="noopener">View repo →</a>
+      </article>
+    `).join("")}
+  `;
+
+  // ---- Contact ----
+  $("contact").innerHTML = `
+    <div class="scenario-head">
+      <p class="feature-label"><span class="kw">Scenario:</span> Reach out</p>
+      <h2>Contact</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-item">
+        <span class="k">email</span>
+        <a href="mailto:${esc(DATA.person.email)}">${esc(DATA.person.email)}</a>
+      </div>
+      <div class="contact-item">
+        <span class="k">phone</span>
+        <span class="v">${esc(DATA.person.phone)}</span>
+      </div>
+      <div class="contact-item">
+        <span class="k">github</span>
+        <a href="${esc(DATA.person.github)}" target="_blank" rel="noopener">${esc(DATA.person.github.replace("https://", ""))}</a>
+      </div>
+      <div class="contact-item">
+        <span class="k">linkedin</span>
+        <a href="${esc(DATA.person.linkedin)}" target="_blank" rel="noopener">linkedin.com/in/sigit-apri</a>
+      </div>
+      <div class="contact-item">
+        <span class="k">location</span>
+        <span class="v">${esc(DATA.person.location)}</span>
+      </div>
+    </div>
+  `;
+
+  // ---- Footer ----
+  $("year-line").textContent = "© " + new Date().getFullYear() + " " + DATA.person.name;
+  $("status-line").textContent = "portfolio.feature — 0 failed, 6 sections passed";
+
+  // ---- Tab bar scroll-spy ----
+  const tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
+  const sections = tabs.map((t) => document.getElementById(t.getAttribute("data-target")));
+  function setActive(id) {
+    tabs.forEach((t) => {
+      const on = t.getAttribute("data-target") === id;
+      t.classList.toggle("active", on);
+    });
+  }
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => { if (entry.isIntersecting) setActive(entry.target.id); });
+    }, { rootMargin: "-45% 0px -50% 0px", threshold: 0 });
+    sections.forEach((s) => { if (s) observer.observe(s); });
+  }
+})();
+</script>
+
+</body>
+</html>
