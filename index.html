@@ -260,7 +260,8 @@ const DATA = {
     email: "sigitapri.sugi@gmail.com",
     phone: "+62 822-1327-8069",
     linkedin: "https://www.linkedin.com/in/sigit-apri-84b377146",
-    github: "https://github.com/sigitapri"
+    github: "https://github.com/sigitapri",
+    cv: "assets/Sigit_Apri_CV.pdf"
   },
 
   // Given / When / Then summary shown at the top of the page
@@ -480,6 +481,10 @@ const DATA = {
       <div class="contact-item">
         <span class="k">location</span>
         <span class="v">${esc(DATA.person.location)}</span>
+      </div>
+      <div class="contact-item">
+        <span class="k">get cv</span>
+        <a href="${esc(DATA.person.cv)}" download target="_blank" rel="noopener">Download CV (PDF)</a>
       </div>
     </div>
   `;
